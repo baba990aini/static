@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('./css/index.css');
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2.4vh auto;
+      border-radius: 1rem;
+      transition: all 0.3s;
+    }
+
+    .level1 {
+      width: 70vw;
+      height: 6vh;
+      background-color: rgb(178, 209, 255);
+    }
+
+    .level2 {
+      height: 10vh;
+      width: 80vw;
+      background-color: rgb(203, 255, 203);
+    }
+
+    .center {
+      height: 50vh;
+      width: 90vw;
+      background-color: rgb(255, 190, 190);
+    }
+  </style>
+</head>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<body>
+  <div id="app">
+    <div style="height: 50vh;"></div>
+    <div class="scroll-view">
+      <div :class="[
+        'item',
+        'item'+ index,
+        index === showList[0] || index === showList[4] ? 'level1' :
+        index === showList[1] || index === showList[3] ? 'level2' :
+        index === showList[2] ? 'center' : 'level1'
+        ]" v-for="(item, index) in allList" :key="'index' + index">{{ index }}</div>
+    </div>
+    <div style="height: 50vh;"></div>
+    <button style="position: fixed;bottom: 2rem; right: 2rem;width: 4rem;height: 2rem;"><a
+        href="./index.html">返回</a></button>
+  </div>
+</body>
+<script>
+  const { createApp, ref, reactive } = Vue
+  const app = createApp({
+    setup() {
+      const message = ref('Hello vv')
+      const allList = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+      const showList = ref([-2, -1, 0, 1, 2])
+
+      const state = reactive({
+        screen: 0,
+        to: 'bottom',
+        index: 0
+      })
+
+      const scrollHandle = async (e) => {
+        let arr
+        if (state.to === 'bottom') {
+          arr = Array.from(document.querySelectorAll('.scroll-view .item'), (v) => v.getBoundingClientRect().top)
+        } else {
+          arr = Array.from(document.querySelectorAll('.scroll-view .item'), (v) => v.getBoundingClientRect().bottom)
+        }
+        const arr1 = arr.map(v => Math.abs(v - state.screen))
+        const min = Math.min(...arr1)
+        state.index = arr1.indexOf(min)
+        setClass(state.index)
+      }
+
+      const setClass = (index) => {
+        showList.value[0] = index - 2
+        showList.value[1] = index - 1
+        showList.value[2] = index
+        showList.value[3] = index + 1
+        showList.value[4] = index + 2
+      }
+
+      let prePosition = 0
+        state.screen = window.innerHeight / 2
+        window.addEventListener('scroll', (e) => {
+          const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop
+          if (currentScrollPosition > prePosition) {
+            state.to = 'bottom'
+          } else if (currentScrollPosition < prePosition) {
+            state.to = 'top'
+          }
+          prePosition = currentScrollPosition;
+          scrollHandle()
+        })
+      return {
+        message,
+        allList,
+        showList,
+      }
+    }
+  })
+
+  app.mount('#app')
+</script>
+
+</html>

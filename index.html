@@ -1,13 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>列表</title>
+  <style>
+    #check {
+      display: flex;
+      width: 40px;
+      height: 40px;
+    }
+
+    .text {
+      display: flex;
+      width: 100px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      background-color: aqua;
+    }
+  </style>
 </head>
+
 <body>
-  <a href="./bac.html">bac</a>
-  <div>你好</div>
-  
+  <div id="app">
+    <ul>
+      <li><a href="./scroll.html">h5滚动</a></li>
+      <li><a href="./svg-animate.html">svg描边</a></li>
+      <li><a href="./blend.html">交融特效</a></li>
+    </ul>
+    <input id="check" type="checkbox" aria-label="111">
+
+
+    <div class="text">
+      萨迪克法拉盛反馈撒开发发尔萨克fleas开发了
+      <div style="width: 50px;"></div>
+    </div>
+  </div>
+
+
+
 </body>
+
 </html>
